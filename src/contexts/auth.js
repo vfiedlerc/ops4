@@ -23,10 +23,6 @@ export const AuthProvider = ({ children }) => {
 
 
 
-
-
-
-
   const login = (email, password) => {
     //console.log("login auth", { email, password });
     // const loggegUser = { id: "123", email };
@@ -43,23 +39,24 @@ export const AuthProvider = ({ children }) => {
       console.log(response.data.token);
       const token = response.data.token;
       localStorage.setItem("token", token);
+      
     })
 
     axiosInstance.interceptors.request.use(function (config) {
       const token = localStorage.getItem("token");
       config.headers.Authorization = token ? `Bearer ${token}` : "";
       return config;
-    });
+     
+    },
+    error => {
 
-    
+      return Promise.reject(error);
+    }
+    );
+
     navigate("/");
+    
   };
-
-
-
-
-
-
 
 
 
